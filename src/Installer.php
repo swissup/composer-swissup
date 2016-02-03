@@ -14,7 +14,7 @@ class Installer extends LibraryInstaller
     {
         list($vendor, $name) = explode('/', $package->getPrettyName());
 
-        $vendor = ucfirst($vendor);
+        $vendor = str_replace('-', '', ucwords($vendor, '-'));
         $name = str_replace('-', '', ucwords($name, '-'));
 
         return getcwd() . '/release/' . $vendor . '/' . $name;
