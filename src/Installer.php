@@ -17,7 +17,7 @@ class Installer extends LibraryInstaller
         $vendor = str_replace('-', '', ucwords($vendor, '-'));
         $name = str_replace('-', '', ucwords($name, '-'));
 
-        return getcwd() . '/release/' . $vendor . '/' . $name;
+        return getcwd() . '/src/' . $vendor . '/' . $name;
     }
 
     /**
