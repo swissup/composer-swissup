@@ -7,6 +7,9 @@ use Composer\Package\PackageInterface;
 
 class Installer extends LibraryInstaller
 {
+    const TYPE_MODULE = 'magento2-module';
+    const TYPE_THEME  = 'magento2-theme';
+
     /**
      * {@inheritDoc}
      */
@@ -15,9 +18,19 @@ class Installer extends LibraryInstaller
         list($vendor, $name) = explode('/', $package->getPrettyName());
 
         $vendor = str_replace('-', '', ucwords($vendor, '-'));
-        $name = str_replace('-', '', ucwords($name, '-'));
-
-        return getcwd() . '/src/' . $vendor . '/' . $name;
+        $path = getcwd() . '/src/';
+        switch ($package->getType()) {
+            case self::TYPE_MODULE:
+                $name = str_replace('-', '', ucwords($name, '-'));
+                $path .= 'app/code/' . $vendor . '/' . $name;
+                break;
+            case self::TYPE_THEME:
+                $name = str_replace('theme-', '', $name);
+                list($area, $name) = explode('-', $name, 2);
+                $path .= 'app/design/' . $area . '/' . $vendor . '/' . $name;
+                break;
+        }
+        return $path;
     }
 
     /**
@@ -25,6 +38,9 @@ class Installer extends LibraryInstaller
      */
     public function supports($packageType)
     {
-        return 'magento2-module' === $packageType;
+        return in_array($packageType, [
+            self::TYPE_MODULE,
+            self::TYPE_THEME
+        ]);
     }
 }
