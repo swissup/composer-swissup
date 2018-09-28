@@ -21,6 +21,7 @@ class Installer extends LibraryInstaller
         $path = getcwd() . '/src/';
         switch ($package->getType()) {
             case self::TYPE_MODULE:
+                $name = str_replace('module-', '', $name);
                 $name = str_replace('-', '', ucwords($name, '-'));
                 $path .= 'app/code/' . $vendor . '/' . $name;
                 break;
